@@ -90,3 +90,14 @@ func StartAutoRefresh(interval time.Duration) {
 		}
 	}()
 }
+func RefreshFilelist(interval time.Duration) {
+	go func() {
+		ticker := time.NewTicker(interval)
+		for range ticker.C {
+			os.Stdout.WriteString("刷新图片列表...")
+
+			GenJsonFile()
+			os.Stdout.WriteString("图片列表已刷新")
+		}
+	}()
+}

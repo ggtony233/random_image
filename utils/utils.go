@@ -89,6 +89,8 @@ func GenJsonFile() {
 		fmt.Printf("Map转化为byte数组失败,异常:%s\n", err)
 		panic(err)
 	}
+	CacheLock.Lock()
+	defer CacheLock.Unlock()
 	err = os.WriteFile(outputname, result, 0644)
 	if err != nil {
 		panic(err)
