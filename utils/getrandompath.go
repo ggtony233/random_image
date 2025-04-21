@@ -2,7 +2,6 @@ package utils
 
 import (
 	"encoding/json"
-	"fmt"
 	"math/rand"
 	"net/http"
 	"os"
@@ -27,7 +26,9 @@ func RandomImagePath(jsonlocation string) string {
 	//读取json文件
 	jsonfile, _ := os.ReadFile(jsonlocation)
 	if jsonfile == nil {
-		return ""
+		GenJsonFile()
+		jsonfile, _ = os.ReadFile(jsonlocation)
+
 		//generate json file
 		//		utils.GenJsonFile()
 		//		jsonfile, _ = os.ReadFile(jsonlocation)
@@ -69,11 +70,11 @@ func StartAutoRefresh(interval time.Duration) {
 	go func() {
 		ticker := time.NewTicker(interval)
 		for range ticker.C {
-			fmt.Println("刷新图片缓存...")
+			os.Stdout.WriteString("刷新图片缓存...")
 			if err := ReadOneFile(); err != nil {
-				fmt.Println("缓存刷新失败：", err)
+				os.Stdout.WriteString("缓存刷新失败：" + err.Error())
 			} else {
-				fmt.Println("图片缓存已刷新")
+				os.Stdout.WriteString("图片缓存已刷新")
 			}
 		}
 	}()

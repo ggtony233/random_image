@@ -9,6 +9,7 @@ import (
 
 func Router() {
 	utils.ReadOneFile()
+	utils.Log("初始化文件读取完成")
 	utils.StartAutoRefresh(10 * time.Minute)
 	http.HandleFunc("/", process.RandomImage)
 	err := http.ListenAndServe(":8080", nil)

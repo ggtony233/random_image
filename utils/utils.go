@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 	"runtime"
 	"strings"
@@ -16,9 +17,19 @@ type RIConfig struct {
 	RootPath string `json:"image_root_path"`
 }
 
+func init() {
+	_, err := os.Stat("./config/RIConfig.json")
+	if os.IsNotExist(err) {
+		log.Println("初始化配置文件")
+		os.WriteFile("./config/RIConfig.json", []byte(`{"image_root_path":"/app/images"}`), 0644)
+
+	}
+}
+
 // 获取配置文件路径
 func configRead() string {
 	file, err := os.ReadFile("./config/RIConfig.json")
+
 	if err != nil {
 		panic(err)
 	}
@@ -27,6 +38,7 @@ func configRead() string {
 	if err != nil {
 		panic(err)
 	}
+
 	return ImageDir.RootPath
 }
 
@@ -42,7 +54,8 @@ func GenJsonFile() {
 	if fpath[len(fpath)-1] == '/' {
 		fpath = fpath[0 : len(fpath)-1]
 	}
-	outputname := GetJsonPath() + ".json"
+	outputname := GetJsonPath()
+	log.Printf("开始扫描目录:%s\n", fpath)
 	var wg sync.WaitGroup
 	Root := filescan.New(fpath)
 	filescan.Scan(&Root)
@@ -74,4 +87,7 @@ func GenJsonFile() {
 	if err != nil {
 		panic(err)
 	}
+}
+func Log(s string) {
+	log.Println(s + "\n")
 }
