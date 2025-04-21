@@ -61,8 +61,8 @@ func GenJsonFile() {
 		fpath = fpath[0 : len(fpath)-1]
 	}
 	outputname := GetJsonPath()
-	log.Printf("开始扫描目录:%s\n", fpath)
 	var wg sync.WaitGroup
+	log.Printf("开始扫描目录:%s\n", fpath)
 	Root := filescan.New(fpath)
 	filescan.Scan(&Root)
 	MaxLine := make(chan struct{}, runtime.NumCPU())

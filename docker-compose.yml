@@ -3,7 +3,8 @@ services:
     image: 'random_image:local'
     container_name: random_image
     volumes:
-      - '/home/ggtony/Downloads:/app/images'
+      - 'your_path_to_images:/app/images'
+      - 'your_path_to_config:/app/filelist'
     ports:
       - '8080:8080'
     restart: unless-stopped
