@@ -49,7 +49,7 @@ func configRead() string {
 
 // 获取json文件名(路径)
 func GetJsonPath() string {
-	return strings.ReplaceAll(configRead(), "/", "_") + ".json"
+	return "filelist/" + strings.ReplaceAll(configRead(), "/", "_") + ".json"
 	//return strings.ReplaceAll("/app/images", "/", "_") + ".json"
 }
 
