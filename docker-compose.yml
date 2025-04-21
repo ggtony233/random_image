@@ -7,4 +7,4 @@ services:
       - 'your_path_to_config:/app/filelist'
     ports:
       - '8080:8080'
-    restart: unless-stopped
+    restart: unless-stopped 
