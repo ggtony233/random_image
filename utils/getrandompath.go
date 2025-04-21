@@ -5,12 +5,14 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"strings"
 	"sync"
 	"time"
 )
 
 var ImageData []byte
 var Type string
+var Name string
 var CacheLock sync.RWMutex
 
 type Myfile struct {
@@ -52,20 +54,26 @@ func ReadOneFile() error {
 	Ipath := RandomImagePath(GetJsonPath())
 	Log("读取图片...")
 	data, err := os.ReadFile(Ipath)
+
 	if err != nil {
 		return err
 	}
 	Log("图片" + Ipath + "读取成功")
 	CacheLock.Lock()
 	defer CacheLock.Unlock()
+	Name = GenFileName(Ipath)
 	Type = http.DetectContentType(data)
 	ImageData = data
 	return nil
 }
-func GetFile() ([]byte, string) {
+func GenFileName(s string) string {
+	FileName := strings.Split(s, "/")
+	return FileName[len(FileName)-2] + FileName[len(FileName)-1]
+}
+func GetFile() ([]byte, string, string) {
 	CacheLock.RLock()
 	defer CacheLock.RUnlock()
-	return ImageData, Type
+	return ImageData, Type, Name
 }
 
 // StartAutoRefresh 启动定时缓存刷新
