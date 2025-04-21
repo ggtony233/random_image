@@ -1,5 +1,5 @@
 # 构建阶段
-FROM golang as builder
+FROM golang:1.24.2-alpine3.21 as builder
 WORKDIR /builder
 COPY . .
 
