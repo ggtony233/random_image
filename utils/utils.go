@@ -18,20 +18,25 @@ type RIConfig struct {
 }
 
 func init() {
-	_, err := os.Stat("./config/RIConfig.json")
+	_, err := os.Stat("config/RIConfig.json")
 	if os.IsNotExist(err) {
-		log.Println("初始化配置文件")
-		os.WriteFile("./config/RIConfig.json", []byte(`{"image_root_path":"/app/images"}`), 0644)
+		log.Printf("配置文件不存在,创建配置文件")
+		err1 := os.MkdirAll("config", 0755)
+		if err1 != nil {
+			log.Printf("创建配置文件目录失败,异常:%s\n", err1.Error())
+		}
+		err1 = os.WriteFile("config/RIConfig.json", []byte(`{"image_root_path":"/app/images"}`), 0644)
+		log.Printf("初始化配置文件%s\n", err1)
 
 	}
 }
 
 // 获取配置文件路径
 func configRead() string {
-	file, err := os.ReadFile("./config/RIConfig.json")
+	file, err := os.ReadFile("config/RIConfig.json")
 
 	if err != nil {
-		panic(err)
+		log.Printf("读取配置文件失败,异常:%s\n", err.Error())
 	}
 	var ImageDir RIConfig
 	err = json.Unmarshal(file, &ImageDir)
@@ -45,12 +50,13 @@ func configRead() string {
 // 获取json文件名(路径)
 func GetJsonPath() string {
 	return strings.ReplaceAll(configRead(), "/", "_") + ".json"
-
+	//return strings.ReplaceAll("/app/images", "/", "_") + ".json"
 }
 
 // 生成json文件
 func GenJsonFile() {
 	fpath := configRead()
+	//fpath := "/app/images"
 	if fpath[len(fpath)-1] == '/' {
 		fpath = fpath[0 : len(fpath)-1]
 	}

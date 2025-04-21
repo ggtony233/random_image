@@ -49,10 +49,13 @@ func RandomImagePath(jsonlocation string) string {
 
 }
 func ReadOneFile() error {
-	data, err := os.ReadFile(RandomImagePath(GetJsonPath()))
+	Ipath := RandomImagePath(GetJsonPath())
+	Log("读取图片...")
+	data, err := os.ReadFile(Ipath)
 	if err != nil {
 		return err
 	}
+	Log("图片" + Ipath + "读取成功")
 	CacheLock.Lock()
 	defer CacheLock.Unlock()
 	Type = http.DetectContentType(data)
