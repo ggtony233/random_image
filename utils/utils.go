@@ -24,10 +24,16 @@ func init() {
 		err1 := os.MkdirAll("config", 0755)
 		if err1 != nil {
 			log.Printf("创建配置文件目录失败,异常:%s\n", err1.Error())
+			os.Exit(1)
 		}
-		err1 = os.WriteFile("config/RIConfig.json", []byte(`{"image_root_path":"/app/images"}`), 0644)
-		log.Printf("初始化配置文件%s\n", err1)
 
+		err1 = os.WriteFile("config/RIConfig.json", []byte(`{"image_root_path":"/app/images"}`), 0644)
+
+		log.Println("初始化配置文件")
+		if err1 != nil {
+			log.Printf("创建配置文件失败,异常:%s\n", err1.Error())
+			os.Exit(1)
+		}
 	}
 }
 

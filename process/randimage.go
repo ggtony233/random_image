@@ -13,8 +13,8 @@ import (
 
 func RandomImage(w http.ResponseWriter, r *http.Request) {
 	// 调用打开文件函数
-	imageData, contentType, Name := utils.GetFile()
-	log.Printf("一次请求，图片类型：%s, 图片名称：%s", contentType, Name)
+	imageData, contentType, _ := utils.GetFile()
+
 	//http.ServeFile(w, r, ImagePath)
 	w.Header().Set("Content-Length", fmt.Sprintf("%d", len(imageData)))
 	w.Header().Set("Content-Type", contentType)
@@ -26,5 +26,16 @@ func RandomImage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
+
+}
+func Refresh(w http.ResponseWriter, r *http.Request) {
+	// 调用刷新函数
+	err := utils.ReadOneFile()
+	if err != nil {
+		log.Printf("%s", err.Error())
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+	w.Write([]byte("刷新成功"))
 
 }

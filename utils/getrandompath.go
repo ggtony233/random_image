@@ -81,11 +81,8 @@ func StartAutoRefresh(interval time.Duration) {
 	go func() {
 		ticker := time.NewTicker(interval)
 		for range ticker.C {
-			os.Stdout.WriteString("刷新图片缓存...")
 			if err := ReadOneFile(); err != nil {
 				os.Stdout.WriteString("缓存刷新失败：" + err.Error())
-			} else {
-				os.Stdout.WriteString("图片缓存已刷新")
 			}
 		}
 	}()
