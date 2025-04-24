@@ -17,8 +17,8 @@ func init() {
 			}
 		}
 
-		//err1 = os.WriteFile("config/RIConfig.json", []byte(`{"image_root_path":"/app/images"}`), 0644)
-		err = os.WriteFile("config/RIConfig.json", []byte(`{"image_root_path":"/WindowsData/Windows Data/Picture/水淼Aqua 213套合集[48.9G]"}`), 0644)
+		err = os.WriteFile("config/RIConfig.json", []byte(`{"image_root_path":"/app/images"}`), 0644)
+		//err = os.WriteFile("config/RIConfig.json", []byte(`{"image_root_path":"/WindowsData/Windows Data/Picture/水淼Aqua 213套合集[48.9G]"}`), 0644)
 		log.Println("初始化配置文件")
 		if err != nil {
 			log.Printf("创建配置文件失败,异常:%s\n", err.Error())
