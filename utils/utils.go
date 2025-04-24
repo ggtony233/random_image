@@ -17,26 +17,6 @@ type RIConfig struct {
 	RootPath string `json:"image_root_path"`
 }
 
-func init() {
-	_, err := os.Stat("config/RIConfig.json")
-	if os.IsNotExist(err) {
-		log.Printf("配置文件不存在,创建配置文件")
-		err1 := os.MkdirAll("config", 0755)
-		if err1 != nil {
-			log.Printf("创建配置文件目录失败,异常:%s\n", err1.Error())
-			os.Exit(1)
-		}
-
-		err1 = os.WriteFile("config/RIConfig.json", []byte(`{"image_root_path":"/app/images"}`), 0644)
-
-		log.Println("初始化配置文件")
-		if err1 != nil {
-			log.Printf("创建配置文件失败,异常:%s\n", err1.Error())
-			os.Exit(1)
-		}
-	}
-}
-
 // 获取配置文件路径
 func configRead() string {
 	file, err := os.ReadFile("config/RIConfig.json")
@@ -97,6 +77,12 @@ func GenJsonFile() {
 	}
 	CacheLock.Lock()
 	defer CacheLock.Unlock()
+	if !IsExists("filelist") {
+		err = os.MkdirAll("filelist", 0755)
+		if err != nil {
+			panic(err)
+		}
+	}
 	err = os.WriteFile(outputname, result, 0644)
 	if err != nil {
 		panic(err)
@@ -104,4 +90,13 @@ func GenJsonFile() {
 }
 func Log(s string) {
 	log.Println(s + "\n")
+}
+func IsExists(path string) bool {
+	_, err := os.Stat(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return false
+		}
+	}
+	return true
 }
