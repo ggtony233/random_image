@@ -35,6 +35,12 @@ func configRead() string {
 
 // 获取json文件名(路径)
 func GetJsonPath() string {
+	if !IsExists("filelist") {
+		err := os.MkdirAll("filelist", 0755)
+		if err != nil {
+			panic(err)
+		}
+	}
 	return "filelist/" + strings.ReplaceAll(configRead(), "/", "_") + ".json"
 	//return strings.ReplaceAll("/app/images", "/", "_") + ".json"
 }
@@ -77,12 +83,6 @@ func GenJsonFile() {
 	}
 	CacheLock.Lock()
 	defer CacheLock.Unlock()
-	if !IsExists("filelist") {
-		err = os.MkdirAll("filelist", 0755)
-		if err != nil {
-			panic(err)
-		}
-	}
 	err = os.WriteFile(outputname, result, 0644)
 	if err != nil {
 		panic(err)
