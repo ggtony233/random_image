@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/json"
+	"errors"
 	"math/rand"
 	"net/http"
 	"os"
@@ -44,7 +45,7 @@ func RandomImagePath(jsonlocation string) string {
 	}
 	err := json.Unmarshal(jsonfile, &FileList)
 	if err != nil || len(FileList.Files) == 0 {
-		return ""
+		return "null"
 	}
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	return FileList.RootPath + FileList.Files[r.Intn(len(FileList.Files))].Path
@@ -54,6 +55,10 @@ func RandomImagePath(jsonlocation string) string {
 }
 func ReadOneFile() error {
 	Ipath := RandomImagePath(GetJsonPath())
+	if Ipath == "null" {
+		return errors.New("图片列表为空,请检查json文件是否存在或是否正确")
+
+	}
 	Log("读取图片...")
 	data, err := os.ReadFile(Ipath)
 	if err != nil {
