@@ -51,16 +51,15 @@ func RandomImagePath(jsonlocation string) string {
 
 }
 func ReadOneFile() error {
+	CacheLock.Lock()
+	defer CacheLock.Unlock()
 	Ipath := RandomImagePath(GetJsonPath())
 	Log("读取图片...")
 	data, err := os.ReadFile(Ipath)
-
 	if err != nil {
 		return err
 	}
 	Log("图片" + Ipath + "读取成功")
-	CacheLock.Lock()
-	defer CacheLock.Unlock()
 	Name = GenFileName(Ipath)
 	Type = http.DetectContentType(data)
 	ImageData = data
@@ -92,7 +91,6 @@ func RefreshFilelist(interval time.Duration) {
 		ticker := time.NewTicker(interval)
 		for range ticker.C {
 			os.Stdout.WriteString("刷新图片列表...")
-
 			GenJsonFile()
 			os.Stdout.WriteString("图片列表已刷新")
 		}
