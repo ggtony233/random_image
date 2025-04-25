@@ -43,7 +43,7 @@ func RandomImagePath(jsonlocation string) string {
 		Files:    []Myfile{},
 	}
 	err := json.Unmarshal(jsonfile, &FileList)
-	if err != nil {
+	if err != nil || len(FileList.Files) == 0 {
 		return ""
 	}
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
