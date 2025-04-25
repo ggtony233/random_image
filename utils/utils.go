@@ -70,7 +70,6 @@ func GenJsonFile() {
 	outputfile.Filelist = flist[:L]
 	outputfile.Rootpath = Root.RootDir
 	result, err = json.Marshal(outputfile)
-
 	if err != nil {
 		fmt.Printf("Map转化为byte数组失败,异常:%s\n", err)
 		panic(err)
