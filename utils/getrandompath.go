@@ -26,7 +26,9 @@ type TrueFilelist struct {
 
 func RandomImagePath(jsonlocation string) string {
 	//读取json文件
+	CacheLock.Lock()
 	jsonfile, _ := os.ReadFile(jsonlocation)
+	CacheLock.Unlock()
 	if jsonfile == nil {
 		GenJsonFile()
 		jsonfile, _ = os.ReadFile(jsonlocation)
@@ -51,8 +53,6 @@ func RandomImagePath(jsonlocation string) string {
 
 }
 func ReadOneFile() error {
-	CacheLock.Lock()
-	defer CacheLock.Unlock()
 	Ipath := RandomImagePath(GetJsonPath())
 	Log("读取图片...")
 	data, err := os.ReadFile(Ipath)
@@ -60,6 +60,8 @@ func ReadOneFile() error {
 		return err
 	}
 	Log("图片" + Ipath + "读取成功")
+	CacheLock.Lock()
+	defer CacheLock.Unlock()
 	Name = GenFileName(Ipath)
 	Type = http.DetectContentType(data)
 	ImageData = data
