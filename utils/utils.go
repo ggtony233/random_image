@@ -52,6 +52,7 @@ func GenJsonFile() {
 	if fpath[len(fpath)-1] == '/' {
 		fpath = fpath[0 : len(fpath)-1]
 	}
+
 	outputname := GetJsonPath()
 	var wg sync.WaitGroup
 	log.Printf("开始扫描目录:%s\n", fpath)
@@ -66,6 +67,8 @@ func GenJsonFile() {
 		task.Filefound(&Root, MaxLine, &wg)
 	}()
 	wg.Wait()
+	filescan.Count = 0
+	filescan.LongCount = 0
 	flist := make([]filescan.FileMap, 100000)
 	L := filescan.Field(&Root, flist, 100000, "Image", fpath)
 	var outputfile struct {
