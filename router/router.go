@@ -3,8 +3,9 @@ package router
 import (
 	"net/http"
 	"process"
-	"random_image/utils"
 	"time"
+
+	"github.com/ggtony233/random_image/utils"
 )
 
 func Router() {

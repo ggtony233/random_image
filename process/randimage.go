@@ -6,7 +6,8 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"random_image/utils"
+
+	"github.com/ggtony233/random_image/utils"
 )
 
 // 随机展示图片
