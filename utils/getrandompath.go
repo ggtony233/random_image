@@ -64,10 +64,11 @@ func ReadOneFile() error {
 	if err != nil {
 		return err
 	}
-	Log("图片" + Ipath + "读取成功")
+	Name = GenFileName(Ipath)
+	Log("图片" + Name + "读取成功")
 	CacheLock.Lock()
 	defer CacheLock.Unlock()
-	Name = GenFileName(Ipath)
+
 	Type = http.DetectContentType(data)
 	ImageData = data
 	return nil
