@@ -63,10 +63,7 @@ func GenJsonFile() {
 	var result []byte
 	var err error
 	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		task.Filefound(&Root, MaxLine, &wg)
-	}()
+	go task.Filefound(&Root, MaxLine, &wg)
 	wg.Wait()
 	filescan.Count = 0
 	filescan.LongCount = 0
