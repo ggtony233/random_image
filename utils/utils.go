@@ -3,14 +3,14 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
+	"gitee.com/ggtony/folder-scan/filescan"
+	"gitee.com/ggtony/folder-scan/task"
 	"log"
 	"os"
+	"path/filepath"
 	"runtime"
 	"strings"
 	"sync"
-
-	"gitee.com/ggtony/folder-scan/filescan"
-	"gitee.com/ggtony/folder-scan/task"
 )
 
 type RIConfig struct {
@@ -41,17 +41,18 @@ func GetJsonPath() string {
 			panic(err)
 		}
 	}
-	return "filelist/" + strings.ReplaceAll(configRead(), "/", "_") + ".json"
+	//return "filelist/" + strings.ReplaceAll(configRead(), "/", "_") + ".json"
 	//return strings.ReplaceAll("/app/images", "/", "_") + ".json"
+	root := filepath.Clean(configRead())
+	safedir := strings.ReplaceAll(root, string(os.PathSeparator), "_")
+	safedir = strings.ReplaceAll(safedir, ":", "_")
+	return filepath.Join("filelist", safedir+".json")
 }
 
 // 生成json文件
 func GenJsonFile() {
-	fpath := configRead()
-	//fpath := "/app/images"
-	if fpath[len(fpath)-1] == '/' {
-		fpath = fpath[0 : len(fpath)-1]
-	}
+	fpath := filepath.Clean(configRead())
+	//fpath := "/app/images
 
 	outputname := GetJsonPath()
 	var wg sync.WaitGroup
